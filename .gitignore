@@ -1,0 +1,49 @@
+# Скомпилированные бинарники
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+mb-ws-proxy
+mb-ws-proxy.exe
+
+# Папки сборки
+/dist/
+/bin/
+/build/
+
+# Тестовые бинарники
+*.test
+
+# Отчёты покрытия кода
+*.out
+*.prof
+
+# Зависимости (если используете vendor-модель)
+/vendor/
+
+# Рабочие файлы Go
+go.work
+go.work.sum
+
+# IDE и редакторы
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.settings/
+
+# OS-файлы
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Логи
+*.log
+logs/
+
+# Временные файлы
+tmp/
+temp/
