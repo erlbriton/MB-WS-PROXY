@@ -16,7 +16,7 @@ import (
 )
 
 const (
-	defaultDevicePort = 501
+	defaultDevicePort = 502
 	dialTimeout       = 5 * time.Second
 	tcpKeepAlive      = 30 * time.Second
 	tcpBufSize        = 4096
@@ -250,6 +250,7 @@ func pumpWS(s *Session) {
 				s.errCh <- fmt.Errorf("tcp write: %w", err)
 				return
 			}
+			s.logf("W2T: %x", data)
 			s.bytesW2T.Add(int64(len(data)))
 		case websocket.TextMessage:
 			s.logf("получен текстовый фрейм (%d Б), проигнорирован", len(data))
@@ -265,11 +266,13 @@ func pumpTCP(s *Session) {
 	for {
 		n, err := s.tcp.Read(buffer)
 		if n > 0 {
+			s.logf("RAW_TCP_IN: %x", buffer[:n])
 			if err := s.sendBinary(buffer[:n]); err != nil {
 				s.errCh <- fmt.Errorf("ws write: %w", err)
 				return
 			}
 			s.bytesT2W.Add(int64(n))
+			s.logf("T2W: %x", buffer[:n])
 		}
 		if err != nil {
 			s.errCh <- fmt.Errorf("tcp read: %w", err)

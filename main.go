@@ -5,6 +5,7 @@ import (
 	_ "embed"
 	"flag"
 	"fmt"
+	"io"
 	"log"
 	"net"
 	"net/http"
@@ -60,7 +61,9 @@ func main() {
 	logPath := filepath.Join(filepath.Dir(execPath), "mb-ws-proxy.log")
 	logFile, _ := os.OpenFile(logPath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
 	defer logFile.Close()
-	log.SetOutput(logFile)
+
+	// Направляем вывод логов одновременно в консоль (os.Stdout) и в файл логов
+	log.SetOutput(io.MultiWriter(os.Stdout, logFile))
 
 	sessions := NewSessionHub()
 	addr := net.JoinHostPort(*bind, strconv.Itoa(*port))
